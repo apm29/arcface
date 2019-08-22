@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="myStyle.css">
+    <script>
+        function getAjax() {
+            var xmlhttp;
+            if (window.XMLHttpRequest) {
+                //  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+                xmlhttp = new XMLHttpRequest();
+            }
+            else {
+                // IE6, IE5 浏览器执行代码
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+
+                    var respJson = JSON.parse(xmlhttp.responseText);
+                    for (var i = 0; i < respJson.length; i++) {
+                        var tableRow = document.createElement("tr");
+                        var tableE1 = document.createElement("td");
+                        var tableE2 = document.createElement("td");
+                        var tableE3 = document.createElement("td");
+                        tableRow.setAttribute("class", "tabtxt2");
+                        tableRow.appendChild(tableE1);
+                        tableRow.appendChild(tableE2);
+                        tableRow.appendChild(tableE3);
+                        tableE1.innerHTML = respJson[i].id;
+                        tableE2.innerHTML = respJson[i].createTime;
+                        tableE3.innerHTML = respJson[i].logContent;
+                        document.getElementById('log_table').appendChild(tableRow);
+                    }
+
+
+                }
+            }
+            xmlhttp.open("GET", "/databaseList", true);
+            xmlhttp.send();
+        }
+        getAjax();
+    </script>
+</head>
+
+<body>
+
+    <div>
+        <h2>最近1分钟LOG</h2>
+    </div>
+    <button type="button" onclick="getAjax()">查询</button>
+    <table id="log_table" width="100%" 
+        align="center">
+        <tr>
+            <th>ID</th>
+            <th>CREATE_TIME</th>
+            <th>CONTENT</th>
+        </tr>
+    </table>
+   
+
+</body>
+
+</html>
